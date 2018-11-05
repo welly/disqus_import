@@ -1,6 +1,7 @@
 <?php
 
-define('COMMENT_BUNDLE', 'blog_post');
+define('COMMENT_BUNDLE', 'disqus_forum');
+define('COMMENT_FIELD_NAME', 'field_comments_live');
 
 use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -80,8 +81,8 @@ function _parse_disqus_xml() {
 
 function _add_comment_field_to_nodes() {
   // enable comment field
-  $field_storage = FieldStorageConfig::loadByName('node', 'comment');
-  $field = FieldConfig::loadByName('node', COMMENT_BUNDLE, 'comment');
+  $field_storage = FieldStorageConfig::loadByName('node', COMMENT_FIELD_NAME);
+  $field = FieldConfig::loadByName('node', COMMENT_BUNDLE, COMMENT_FIELD_NAME);
   if (empty($field)) {
     $field = entity_create('field_config', array(
       'field_storage' => $field_storage,
@@ -110,16 +111,16 @@ function _add_comment_field_to_nodes() {
       }
 
       if ($thread->isDeleted === 'true') {
-        $node->comment->status = CommentItemInterface::HIDDEN;
+        $node->field_comments_live->status = CommentItemInterface::HIDDEN;
       }
-      else if ($node->field_disqus_comment->status != '1') {
-        $node->comment->status = CommentItemInterface::HIDDEN;
+      else if ($node->field_comments_live->status != '1') {
+        $node->field_comments_live->status = CommentItemInterface::HIDDEN;
       }
       else if ($thread->isClosed === 'true') {
-        $node->comment->status = CommentItemInterface::CLOSED;
+        $node->field_comments_live->status = CommentItemInterface::CLOSED;
       }
       else {
-        $node->comment->status = CommentItemInterface::OPEN;
+        $node->field_comments_live->status = CommentItemInterface::OPEN;
       }
 
       $node->save();

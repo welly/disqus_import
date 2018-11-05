@@ -94,7 +94,7 @@ process:
 
   comment_type:
     plugin: default_value
-    default_value: comment
+    default_value: comment_node_disqus_forum
 
   entity_type:
     plugin: default_value
@@ -102,7 +102,7 @@ process:
 
   field_name:
     plugin: default_value
-    default_value: comment
+    default_value: field_comments_live
 
   name: name
   mail: email
